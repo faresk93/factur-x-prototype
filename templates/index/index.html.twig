@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factur-X{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Factur-X</h1>
+    <div>
+        <p>Exemple Factur-X</p>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="{{ path('get-factur-x', {'type':'pdf-x'}) }}">factur-x pdf</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('get-factur-x', {'type':'pdf'}) }}">simple pdf</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('get-factur-x', {'type':'xml'}) }}">xml</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h3>From a Factur-X</h3>
+        <h4><a href="{{ path('extract-factur-x-xml') }}">extract xml</a></h4>
+        <h4><button id="check-xml">vérifier la validité de l'xml</button></h4>
+        <h4><button id="get-xml-profile">get xml profile</button></h4>
+    </div>
+    <hr>
+    <div>
+        <h3>From a regular "facture"</h3>
+        <h4><a href="{{ path('attach-xml') }}">attach xml to "facture"</a></h4>
+        <h4><a href="#">create xml (WIP...)</a></h4>
+    </div>
+
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            // check valid xml
+            $('#check-xml').click(async function(){
+                let {valid, message} = await $.get("{{ path('validate-xml') }}")
+                alert(`xml valide: ${valid} => message: "${message}"`)
+            })
+
+            // get xml profile
+            $('#get-xml-profile').click(async function(){
+                let profile = await $.get("{{ path('get-xml-profile') }}")
+                alert(`Profile: "${profile}"`)
+            })
+        });
+
+    </script>
+{% endblock %}
